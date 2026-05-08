@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yarn Inventory - CrochetMate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        
+        .yarn-header-row, .action-btn, .dropdown-menu button, 
+        .hover-logout-btn, .account-container strong {
+            font-family: 'Sansita', sans-serif;
+        }
+
+        .yarn-text, .search-box, #user-display-name, #user-display-email {
+            font-family: 'Trocchi', serif;
+        }
+
+        body { overflow: hidden; }
+
+        .main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0e2e1;
+        }
+
+        /* Swatch + Account Alignment */
+        .swatch-account-group {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .swatch-btn {
+            background: #fae2e7 !important;
+            border: 1px solid #5a174c !important;
+            color: #5a174c !important;
+            padding: 8px 18px;
+            height: 42px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Table Alignment Fixes */
+        .yarn-container {
+            flex: 1;
+            padding: 20px 40px;
+            overflow-y: auto;
+        }
+
+        .yarn-header-row, .yarn-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 1fr 1fr; 
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .yarn-row {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(90, 23, 76, 0.1);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .yarn-row:hover {
+            background-color: rgba(90, 23, 76, 0.05);
+        }
+
+        .selected-for-delete {
+            background-color: #d6aec6 !important;
+            border-left: 5px solid #5a174c;
+        }
+    </style>
+</head>
+
+<body class="flex h-full">
+
+<aside class="sidebar">
+    <div class="logo-header">
+        <img src="Mate.png" alt="CrochetMate Logo" class="logo-img">
+    </div>
+    
+    <nav class="nav-container">
+        <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+        <button class="nav-btn active-nav" onclick="location.href='yarn.html'">Yarn</button>
+        <button class="nav-btn" onclick="location.href='tool.html'">Tools</button>
+        <button class="nav-btn" onclick="location.href='ai.html'">Yarn Estimator</button> 
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="top-bar">
+        <button class="action-btn" onclick="location.href='yarn_details_form.html'">New</button>
+        <button class="action-btn" onclick="toggleDeleteMode(this)">Delete</button>
+
+        <div style="position: relative;">
+            <button class="action-btn" onclick="toggleSortMenu(event)">Sort ▾</button>
+            <div id="sortMenu" class="dropdown-menu">
+                <button onclick="sortYarn('nameAsc')">Name A → Z</button>
+                <button onclick="sortYarn('nameDesc')">Name Z → A</button>
+                <button onclick="sortYarn('fiber')">Fiber (A-Z)</button> 
+                <button onclick="sortYarn('sizeAsc')">Size Small → Large</button>
+                <button onclick="sortYarn('sizeDesc')">Size Large → Small</button>
+                <button onclick="sortYarn('weightAsc')">Weight Small → Big</button>
+                <button onclick="sortYarn('weightDesc')">Weight Big → Small</button>
+            </div>
+        </div>
+
+        <input type="text" id="searchYarn" class="search-box" placeholder="Search Yarn...">
+
+        <div class="swatch-account-group">
+            
+            <div class="account-container">
+                <a href="account.html" class="profile-trigger">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </a>
+                <div class="account-hover-card">
+                    <p><strong>User:</strong> <span id="user-display-name">sneha</span></p>
+                    <p><strong>Email:</strong> <span id="user-display-email">...</span></p>
+                    <button class="hover-logout-btn" onclick="handleLogout(event)">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <div class="yarn-container" id="yarnContainer">
+        <div class="yarn-header-row">
+            <div>Colour</div>
+            <div>Name</div>
+            <div>Size</div>
+            <div>Weight</div>
+            <div>Fibre</div>
+        </div>
+        </div>
+</main>
+
+    <script type="module">
+    import { supabase } from './supabase-config.js';
+
+  async function displayUserProfile() {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return;
+
+    const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('username')
+        .eq('email', user.email)
+        .single();
+
+    const nameEl = document.getElementById('user-display-name');
+    const emailEl = document.getElementById('user-display-email');
+
+    if (nameEl) nameEl.textContent = profile?.username || 'sneha';
+    if (emailEl) emailEl.textContent = user.email;
+  }
+
+  window.toggleSortMenu = function(event) {
+    if (event) event.stopPropagation();
+    document.getElementById("sortMenu").classList.toggle("show");
+  }
+
+  window.handleLogout = async function() {
+    await supabase.auth.signOut();
+    localStorage.clear();
+    window.location.href = 'login.html';
+  }
+
+  async function loadYarnRecords() {
+    const container = document.getElementById("yarnContainer");
+    const oldRows = document.querySelectorAll(".yarn-row");
+    oldRows.forEach(row => row.remove());
+    
+    const { data: yarnList, error } = await supabase
+        .from('yarn')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return;
+    renderRows(yarnList);
+  }
+
+  function renderRows(list) {
+    const container = document.getElementById("yarnContainer");
+    list.forEach((yarn) => {
+        const row = document.createElement("div");
+        row.className = "yarn-row";
+        row.setAttribute('data-id', yarn.id);
+        row.onclick = () => {
+            if (container.classList.contains("delete-active")) {
+                row.classList.toggle("selected-for-delete");
+            } else {
+                window.location.href = `yarn_details_form.html?edit=${yarn.id}`;
+            }
+        };
+        row.innerHTML = `
+            <div class="color-cell"><div class="yarn-color-box" style="background:${yarn.color}; width:25px; height:25px; border-radius:4px; border:1px solid #5a174c; margin:auto;"></div></div>
+            <div class="yarn-text">${yarn.name || "N/A"}</div>
+            <div class="yarn-text">${yarn.size || "N/A"}</div>
+            <div class="yarn-text">${yarn.weight || "0"}g</div>
+            <div class="yarn-text">${yarn.fiber || "N/A"}</div>
+        `;
+        container.appendChild(row);
+    });
+  }
+
+  async function sortYarn(type){
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    const { data: yarnList, error } = await supabase.from('yarn').select('*').eq('user_id', session.user.id);
+    if(error) return;
+
+    if(type === "fiber") yarnList.sort((a, b) => (a.fiber || "").localeCompare(b.fiber || ""));
+    if(type === "nameAsc") yarnList.sort((a,b)=>a.name.localeCompare(b.name));
+    if(type === "nameDesc") yarnList.sort((a,b)=>b.name.localeCompare(a.name));
+    if(type === "weightAsc") yarnList.sort((a,b)=>Number(a.weight)-Number(b.weight));
+    if(type === "weightDesc") yarnList.sort((a,b)=>Number(b.weight)-Number(a.weight));
+
+    const container = document.getElementById("yarnContainer");
+    document.querySelectorAll(".yarn-row").forEach(row => row.remove());
+    renderRows(yarnList);
+    document.getElementById("sortMenu").classList.remove("show");
+  }
+
+  function searchYarn() {
+    const searchInput = document.getElementById("searchYarn");
+    const rows = document.querySelectorAll(".yarn-row");
+    const val = searchInput.value.toLowerCase().trim();
+    rows.forEach(row => {
+        const rowContent = row.textContent.toLowerCase();
+        row.style.display = (val === "" || rowContent.includes(val)) ? "grid" : "none";
+    });
+  }
+
+  window.onload = async () => {
+    await loadYarnRecords();
+    await displayUserProfile();
+    document.getElementById("searchYarn").addEventListener("input", searchYarn);
+  };
+
+  let deleteMode = false;
+  function toggleDeleteMode(btn){
+    const container = document.getElementById("yarnContainer");
+    deleteMode = !deleteMode;
+    container.classList.toggle("delete-active");
+    btn.innerText = deleteMode ? "Confirm Delete" : "Delete";
+    if(!deleteMode) deleteSelectedRows();
+  }
+
+  async function deleteSelectedRows() {
+    const rows = document.querySelectorAll(".selected-for-delete");
+    const idsToDelete = Array.from(rows).map(row => row.getAttribute('data-id'));
+    if (idsToDelete.length > 0) {
+        const { error } = await supabase.from('yarn').delete().in('id', idsToDelete);
+        if (!error) loadYarnRecords();
+    }
+  }
+</script>
+</body>
+</html>

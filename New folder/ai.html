@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrochetMate | AI HUB</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ai.css">
+    <style>
+        /* Force font consistency */
+        .top-bar h2, .terminal-header, .input-module label, .toggle-btn, 
+        .predict-btn, .calc-header, .calc-btn, .swatch-link-btn {
+            font-family: 'Sansita', sans-serif;
+        }
+
+        .ai-reply, .input-module input, #calcDisplay, 
+        #user-display-name, #user-display-email {
+            font-family: 'Trocchi', serif;
+        }
+
+        body { overflow: hidden; }
+
+        .main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0e2e1;
+        }
+
+        /* Layout for the AI workspace */
+        .ai-layout-container {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Module styling to match Brutalist cards */
+        .terminal-hub, .calc-tool {
+            background: #fae2e7;
+            border: 1px solid #5a174c;
+            box-shadow: 4px 4px 0px #5a174c;
+        }
+    </style>
+</head>
+<body class="flex h-full">
+
+   <aside class="sidebar">
+    <div class="logo-header">
+        <img src="Mate.png" alt="CrochetMate Logo" class="logo-img">
+    </div>
+    
+        <nav class="nav-container">
+            <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+            <button class="nav-btn" onclick="location.href='yarn.html'">Yarn</button> 
+            <button class="nav-btn" onclick="location.href='tool.html'">Tools</button>
+            <button class="nav-btn active-nav" onclick="location.href='ai.html'">Yarn Estimator</button>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <h2 style="margin: 0; font-size: 1.2rem; color: #5a174c;">Yarn Estimator</h2>
+
+            <div class="account-container" style="margin-left: auto;">
+                <a href="account.html" class="profile-trigger">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </a>
+                <div class="account-hover-card">
+                    <p><strong>User:</strong> <span id="user-display-name">sneha</span></p>
+                    <p><strong>Email:</strong> <span id="user-display-email">...</span></p>
+                    <button class="hover-logout-btn" onclick="handleLogout(event)">Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-layout-container">
+            <section class="terminal-hub">
+                <header class="terminal-header">AI COMMAND CENTER</header>
+                
+                <div class="terminal-body" id="terminalChat">
+                    <p class="ai-reply">> SYSTEM READY. Provide swatch and project parameters.</p>
+                </div>
+
+                <div class="ai-input-grid">
+                    <div class="input-module" style="grid-column: span 2;">
+                        <label>SELECT FIBER ART</label>
+                        <div class="toggle-container">
+                            <button id="knitToggle" class="toggle-btn active" onclick="setCraft('knitting')">KNITTING</button>
+                            <button id="crochetToggle" class="toggle-btn" onclick="setCraft('crochet')">CROCHET</button>
+                        </div>
+                    </div>
+
+                    <div class="input-module">
+                        <label>YARN WEIGHT (1-7)</label>
+                        <input type="number" id="yarnWeightInput" >
+                    </div>
+                    <div class="input-module">
+                        <label>TOOL SIZE (MM)</label>
+                        <input type="number" id="toolSizeInput" step="0.1">
+                    </div>
+
+                    <div class="input-module">
+                        <label>SWATCH STITCHES</label>
+                        <input type="text" id="swatchInput">
+                    </div>
+                    <div class="input-module">
+                        <label>YARN USED (METERS)</label>
+                        <input type="text" id="yarnInput" >
+                    </div>
+                    
+                    <div class="input-module" style="grid-column: span 2;">
+                        <label>TOTAL PROJECT STITCHES</label>
+                        <input type="text" id="projectInput" >
+                    </div>
+                    <button class="predict-btn" onclick="runAILogic()">RUN ML PREDICTION</button>
+                </div>
+            </section>
+
+            <aside class="tool-sidebar">
+                <div class="calc-tool">
+                    <div class="calc-header">CALCULATOR</div>
+                    <input type="text" id="calcDisplay" readonly placeholder="0">
+                    <div class="calc-grid">
+                        <button class="calc-btn" onclick="calcInput('(')">(</button>
+                        <button class="calc-btn" onclick="calcInput(')')">)</button>
+                        <button class="calc-btn" onclick="calcInput('.')">.</button>
+                        <button class="calc-btn op-btn" onclick="calcInput('/')">÷</button>
+                        
+                        <button class="calc-btn" onclick="calcInput('7')">7</button>
+                        <button class="calc-btn" onclick="calcInput('8')">8</button>
+                        <button class="calc-btn" onclick="calcInput('9')">9</button>
+                        <button class="calc-btn op-btn" onclick="calcInput('*')">×</button>
+                        
+                        <button class="calc-btn" onclick="calcInput('4')">4</button>
+                        <button class="calc-btn" onclick="calcInput('5')">5</button>
+                        <button class="calc-btn" onclick="calcInput('6')">6</button>
+                        <button class="calc-btn op-btn" onclick="calcInput('-')">-</button>
+                        
+                        <button class="calc-btn" onclick="calcInput('1')">1</button>
+                        <button class="calc-btn" onclick="calcInput('2')">2</button>
+                        <button class="calc-btn" onclick="calcInput('3')">3</button>
+                        <button class="calc-btn op-btn" onclick="calcInput('+')">+</button>
+                        
+                        <button class="calc-btn zero-btn" onclick="calcInput('0')">0</button>
+                        <button class="calc-btn clear-btn" onclick="calcClear()">C</button>
+                        <button class="calc-btn equal-btn" onclick="calcSolve()">=</button>
+                    </div>
+                </div>
+
+                <button class="swatch-link-btn" onclick="location.href='quickswatchai.html'">
+                    SWATCH CALCULATOR →
+                </button>
+            </aside>
+        </div>
+    </main>
+
+    <script type="module" src="style.js"></script>
+    <script type="module" src="ai.js"></script>
+</body>
+</html>

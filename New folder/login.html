@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CrochetMate</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+    <div class="login-card">
+<div class="logo-header">
+        <img src="Mate1.png" alt="CrochetMate Logo" class="logo-img">
+    </div>        <form id="loginForm">
+            <div class="login-input-group">
+                <label>Username or Email</label>
+                <input type="text" id="login-id" required>
+            </div>
+            <div class="login-input-group">
+                <label>Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+        </form>
+        <p class="signup-link">Need an account? <a href="signup.html">Sign up</a></p>
+    </div>
+    <div class="image-section">
+            <div class="hero-image-wrapper">
+                <img src="hello.jpg" alt="Yarn Collection">
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { supabase } from './supabase-config.js';
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const loginId = document.getElementById('login-id').value.trim();
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+
+            btn.innerText = "Logging in...";
+            let email = loginId;
+
+            // If it's not an email, look up the email via username
+            if (!loginId.includes('@')) {
+                const { data, error } = await supabase.from('user_profiles').select('email').eq('username', loginId).single();
+                if (error || !data) {
+                    btn.innerText = "Login";
+                    return alert("Username not found!");
+                }
+                email = data.email;
+            }
+
+            // Log in with the resolved email
+            const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+            if (authError) {
+                btn.innerText = "Login";
+                alert(authError.message);
+            } else {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

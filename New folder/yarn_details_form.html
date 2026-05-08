@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yarn Details Form</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sansita:wght@400;700;800;900&family=Trocchi&display=swap');
+    body {
+  margin: 0;
+  font-family: 'Sansita', sans-serif;
+  background: #f0e2e1;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  color: #4A4447;
+}
+
+   .form-container {
+  width: 550px;
+  border: 2px solid #5a174c;
+  padding: 25px;
+  border-radius: 10px;
+  background: #f0e2e1;
+  box-shadow: 4px 4px 0px #5a174c;
+}
+
+  h2 {
+  font-family: 'Sansita', sans-serif;
+  color: #4A4447;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}  
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+  display: block;
+  font-family: 'Sansita', sans-serif;
+  color: #4A4447;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+    input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-bottom: 2px solid #5a174c;
+  outline: none;
+  background: transparent;
+  font-family: 'Trocchi', serif;
+  color: #4A4447;
+}
+
+input:focus, select:focus {
+  background-color: #d6aec6;
+}
+
+    .color-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-row input[type="color"] {
+      width: 60px;
+      height: 42px;
+      padding: 0;
+      border: 2px solid #5a174c;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .color-row input[type="text"] {
+      flex: 1;
+    }
+
+    .btn {
+  width: 100%;
+  padding: 10px;
+  background: #5a174c;
+  color: #f0e2e1;
+  border: 2px solid #5a174c;
+  font-family: 'Sansita', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+    .btn:hover {
+  background: #d6aec6;
+  color: #4A4447;
+}
+    .output-box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1.5px dashed #000;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .output-box p {
+      margin: 6px 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .output-box span {
+      font-weight: bold;
+      color: #000;
+    }
+    /* Updated Button Group Layout */
+.button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 15px;                      /* Space between buttons */
+    margin-top: 25px;
+}
+
+/* Remove the default full-width margin from buttons inside the group */
+.button-group .btn {
+    width: 100%; 
+    margin-top: 0;                  /* Remove top margin since grid handles it */
+}
+
+/* Style for the Cancel Button */
+.cancel-btn {
+  background: #f0e2e1 !important;
+  color: #4A4447 !important;
+  border: 2px solid #5a174c !important;
+}
+
+.cancel-btn:hover {
+    background: #f4f4f4 !important;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="form-container">
+    <h2>Yarn Details</h2>
+
+    <form id="yarnForm">
+      <div class="field">
+        <label for="fiber">Fiber Type</label>
+        <select id="fiber" required>
+          <option value="">Select Fiber Type</option>
+          <option>Cotton</option>
+          <option>Acrylic</option>
+          <option>Wool</option>
+          <option>Silk</option>
+          <option>Nylon</option>
+          <option>Blend</option>
+        </select>
+      </div>
+
+      <!-- Size -->
+      <div class="field">
+        <label for="size">Size </label>
+        <select id="size" required>
+          <option value="">Select Size</option>
+          <option>Lace (0)</option>
+          <option>Super Fine (1)</option>
+          <option>Fine (2)</option>
+          <option>DK (3)</option>
+          <option>Aran (4)</option>
+          <option>Bulky (5)</option>
+          <option>Super Bulky (6)</option>
+          <option>Jumbo (7)</option>
+        </select>
+      </div>
+
+      <!-- Name -->
+      <div class="field">
+        <label for="name"> Brand </label>
+        <input type="text" id="name" required />
+      </div>
+
+      <!-- Color -->
+      <div class="field">
+    <label>Colour Code</label>
+    <div class="color-row">
+        <input type="color" id="colorPicker" value="#000" />
+        <input 
+            type="text" 
+            id="colorText" 
+            required 
+        />
+    </div>
+</div>
+
+
+      <!-- Weight -->
+      <div class="field">
+        <label for="weight">Weight</label>
+        <input type="number" id="weight" required />
+      </div>
+
+      <!-- Hook/Needle -->
+      <div class="field">
+        <label for="hook">Recommended Hook or Needle Size (Optional)</label>
+        <input type="text" id="hook" />
+      </div>
+            <!-- Buttons Group -->
+      <div class="button-group">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn cancel-btn" onclick="cancelForm()">Cancel</button>
+      </div>
+
+     
+    </form>
+
+    <!-- Output -->
+    <div class="output-box" id="outputBox">
+      <p><span>Fiber Type:</span> <span id="outFiber"></span></p>
+      <p><span>Size:</span> <span id="outSize"></span></p>
+      <p><span>Name:</span> <span id="outName"></span></p>
+      <p><span>Color:</span> <span id="outColor"></span></p>
+      <p><span>Weight:</span> <span id="outWeight"></span> g</p>
+      <p><span>Hook/Needle:</span> <span id="outHook"></span></p>
+    </div>
+  </div>
+
+    <script type="module">
+    import { supabase } from './supabase-config.js';
+
+  const form = document.getElementById("yarnForm");
+  const urlParams = new URLSearchParams(window.location.search);
+  const editId = urlParams.get('edit'); 
+
+  window.onload = async function() {
+      if (editId) {
+          const { data: item, error } = await supabase
+              .from('yarn')
+              .select('*')
+              .eq('id', editId)
+              .single();
+
+          if (item) {
+              document.getElementById("fiber").value = item.fiber || "";
+              document.getElementById("size").value = item.size || "";
+              document.getElementById("name").value = item.name || "";
+              document.getElementById("colorPicker").value = item.color || "";
+              document.getElementById("colorText").value = item.color_text || "";
+              document.getElementById("weight").value = item.weight || "";
+              document.getElementById("hook").value = item.hook || "";
+              document.querySelector(".btn[type='submit']").innerText = "Save";
+          }
+      }
+  };
+
+  form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      // CHANGE: Use getSession to be more reliable for RLS
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session || !session.user) {
+          alert("Auth Error: You appear to be logged out. Please log in again.");
+          return;
+      }
+
+      const yarnData = {
+          user_id: session.user.id, // Explicitly linking the ID
+          fiber: document.getElementById("fiber").value,
+          size: document.getElementById("size").value,
+          name: document.getElementById("name").value,
+          color: document.getElementById("colorPicker").value,
+          color_text: document.getElementById("colorText").value, 
+          weight: Number(document.getElementById("weight").value),
+          hook: document.getElementById("hook").value
+      };
+
+      try {
+          let response;
+          if (editId) {
+              response = await supabase.from('yarn').update(yarnData).eq('id', editId);
+          } else {
+              response = await supabase.from('yarn').insert([yarnData]);
+          }
+
+          if (response.error) {
+              // This alert will now tell you the EXACT SQL error
+              alert("Database Error: " + response.error.message);
+          } else {
+              window.location.href = "yarn.html";
+          }
+      } catch (err) {
+          alert("System Error: " + err.message);
+      }
+  });
+
+  function cancelForm() {
+      window.location.href = "yarn.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+    /* 1. Global Font Rule Foundation */
+    body, label, h3, select, button, .label, .date-separator {
+        font-family: 'Sansita', sans-serif;
+    }
+
+    input, textarea, .notes-box, #totalTimeDisplay, #sessionTimerDisplay, 
+    #stitchDisplay, #rowDisplay, #createdDateDisplay, #updatedDateDisplay {
+        font-family: 'Trocchi', serif;
+    }
+
+    /* Layout Containers */
+    .top-info-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .info-row {
+        display: flex;
+        gap: 30px;
+        align-items: flex-end;
+    }
+    .info-field {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    .info-field.left-col { flex: 2; }
+    .info-field.right-col { flex: 1; }
+    
+    .info-field.left-col label {
+        font-weight: bold;
+        font-size: 1.1rem;
+        min-width: 155px; 
+        white-space: nowrap;
+        margin-bottom: 2px;
+    }
+    .info-field.right-col label {
+        font-weight: bold;
+        font-size: 1.1rem;
+        min-width: 100px; 
+        white-space: nowrap;
+        margin-bottom: 2px;
+    }
+    
+    .info-field input, 
+    .info-field select,
+    .info-field span#totalTimeDisplay {
+        flex: 1;
+        border: none;
+        border-bottom: 2px solid #000;
+        background: transparent;
+        padding: 2px 5px;
+        font-size: 1rem;
+        outline: none;
+        border-radius: 0;
+        height: 30px; 
+        display: flex;
+        align-items: center;
+    }
+
+    .info-field span#totalTimeDisplay {
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .info-field select {
+        cursor: pointer;
+        appearance: none; 
+        -webkit-appearance: none;
+    }
+
+    /* --- MINIMIZED IMAGES & MAXIMIZED NOTES --- */
+    .notes-wrapper {
+        display: flex;
+        flex-direction: column;
+        border: 3px solid #5a174c;
+        height: 580px; /* Increased overall height */
+        background-color: #f0e2e1;
+        overflow: hidden;
+    }
+
+    .notes-header {
+        flex: 0 0 auto;
+        padding: 10px 15px 5px 15px;
+        /* Line removed under notes label */
+        border-bottom: none; 
+    }
+
+    .notes-scroll-area {
+        flex: 1; /* Majority of space for text */
+        overflow-y: auto;
+        padding: 0 15px 10px 15px; /* Tighter padding */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notes-box {
+        width: 100%;
+        min-height: 100%; 
+        outline: none;
+        font-size: 0.95rem; /* Made text smaller for more space */
+        border: none;
+        color: #4A4447;
+        line-height: 1.4;
+    }
+
+    .image-shelf {
+        flex: 0 0 auto; 
+        padding: 5px 15px; /* Minimal padding */
+        background: rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(90, 23, 76, 0.2); /* Thin subtle line */
+        /* Very small section height */
+        min-height: 55px; 
+        max-height: 65px;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .image-gallery {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+    }
+
+    /* Tiny thumbnails for the slim shelf */
+    .uploaded-img {
+        height: 40px; 
+        width: 40px;
+        object-fit: cover;
+        border: 1px solid #5a174c;
+        border-radius: 3px;
+    }
+
+    /* Bottom Row Controls */
+    .bottom-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; 
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
+        padding: 0; 
+    }
+
+    .dates-info-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #888;
+        font-size: 0.75rem; /* Slightly smaller dates */
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .date-separator {
+        color: #000;
+        font-weight: 900;
+    }
+
+/* --- Counter & Timer Styling (Fixed Layout) --- */
+
+/* 1. Fix the Container Padding */
+#stitchCounterContainer {
+    padding: 25px 15px 15px 15px !important; /* Extra top padding to stop title cutoff */
+    display: flex;
+    flex-direction: column;
+    gap: 12px; 
+    height: auto !important; /* Prevents squishing */
+}
+
+/* 2. Fix the Title */
+#stitchCounterContainer h3 {
+    margin: 0;
+    text-align: center;
+    line-height: 1;
+}
+
+/* 3. Timer & Numbers */
+.timer-display { 
+    font-family: 'Trocchi', serif; 
+    font-size: 2.2rem; 
+    font-weight: bold; 
+    margin: 5px 0; 
+}
+
+#stitchDisplay, #rowDisplay { 
+    font-family: 'Trocchi', serif; 
+    font-weight: bold; 
+    font-size: 1.8rem; /* Made slightly larger for better visibility */
+}
+
+.label { 
+    font-family: 'Sansita', sans-serif; 
+    text-transform: uppercase; 
+    font-size: 0.8rem; 
+}
+
+/* 4. Fix Button Spacing */
+.step-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.action-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.big-action-btn {
+    flex: 1;
+    height: 45px;
+    border-radius: 10px;
+    font-size: 1.5rem;
+}
+
+.counter-display-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 2px !important;    /* Small gap between Target and Numbers */
+    margin-bottom: 5px !important; /* Small gap between Numbers and Buttons */
+    padding: 0 !important;
+    line-height: 1;
+}
+
+/* Ensures the reset button doesn't have its own top margin pushing it out */
+.reset-text-btn {
+    font-family: 'Sansita', sans-serif;
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+    align-self: center;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.counter-display-wrapper span[id$="Display"] {
+    font-size: 1.8rem;
+    font-weight: bold;
+    font-family: 'Trocchi', serif;
+    /* Ensure no extra spacing around the numbers */
+    margin: 0;
+    padding: 0;
+}
+
+.counter-display-wrapper .label {
+    font-family: 'Sansita', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-left: -2px; 
+}
+.counter-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0 !important; /* Forces zero space below the underline */
+    padding-bottom: 0 !important;
+}
+
+
+</style>
+</head>
+<body>
+
+    <main class="project-container">
+        
+        <section class="left-panel">
+            
+            <div class="top-info-container">
+                <div class="info-row">
+                    <div class="info-field left-col">
+                        <label for="projectName">Project name:</label>
+                        <input type="text" id="projectName" >
+                    </div>
+                    <div class="info-field right-col">
+                        <label for="projectStatus">Status:</label>
+                        <select id="projectStatus"> 
+                            <option value="">-- Select --</option>
+                            <option value="Planning">Planning</option>
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Done">Done</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-field left-col">
+                        <label for="yarnInput">Yarn details:</label>
+                        <input type="text" id="yarnInput" >
+                    </div>
+                    <div class="info-field right-col">
+                        <label for="craftType">Type: </label>
+                        <select id="craftType">
+                            <option value="">-- Select --</option>
+                            <option value="Crochet">Crochet</option>
+                            <option value="Knitting">Knitting</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-field left-col">
+                        <label for="needleInput">Needle/hook size:</label>
+                        <input type="text" id="needleInput" >
+                    </div>
+                    <div class="info-field right-col" style="align-items: center; padding-bottom: 2px;">
+                        <label>Total Time:</label>
+                        <span id="totalTimeDisplay">00:00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-wrapper" id="notesContainer">
+                <div class="notes-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <label style="font-weight: bold; font-size: 1.1rem;">Notes:</label>
+                    <div class="image-control" style="position: relative;">
+                        <button type="button" class="add-image-btn" onclick="toggleImageDropdown(event)" style="cursor: pointer; font-weight: bold;">+ Add image</button>
+                        <div class="dropdown-menu" id="imgDropdown">
+                            <button type="button" onclick="triggerFile()">Import</button>
+                            <button type="button" onclick="triggerCamera()">Take Image</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-scroll-area">
+                    <div class="notes-box" contenteditable="true" aria-label="Project Notes" placeholder="Type your notes here..."></div>
+                </div>
+
+                <div class="image-shelf">
+                    <div class="image-gallery" id="imageGallery"></div>
+                </div>
+
+                <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleImageUpload(this)">
+            </div>
+            
+            <div class="bottom-row">
+                <div class="dates-info-container">
+                    <span id="createdDateDisplay">Created: --/--/----</span>
+                    <span class="date-separator">|</span>
+                    <span id="updatedDateDisplay">Last Updated: --/--/----</span>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="done-btn-simple cancel" 
+                            style="background: transparent; color: #000; border: 2px solid #000; cursor: pointer; padding: 6px 15px; font-weight: bold;" 
+                            onclick="cancelProject()">
+                        Cancel
+                    </button>
+                    <button class="done-btn-simple" 
+                            style="background: #000; color: #fff; border: 2px solid #000; cursor: pointer; padding: 6px 15px; font-weight: bold;" 
+                            onclick="saveProjectAndExit(this)">
+                        Done
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="right-panel">
+            <div class="tool-box">
+                <div class="timer-display" id="sessionTimerDisplay">00:00:00</div>
+                <div class="timer-controls">
+                    <button onclick="startTimer()">Start</button>
+                    <button onclick="stopTimer()">Stop</button>
+                    <button onclick="resetSession()">Reset</button>
+                </div>
+                <button class="add-time-btn" onclick="addToTotal()">+ Add to Total</button>
+            </div>
+
+            <div class="tool-box" id="stitchCounterContainer" style="padding-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+                <h3 style="margin: 0;">Stitch Counter</h3>
+                <div class="counter-settings">
+                    <label>Target:</label>
+                    <input type="number" id="targetStitchesInput" placeholder="0" onchange="updateTarget()">
+                </div>
+                <div class="counter-display-wrapper">
+                    <span id="stitchDisplay">0</span> <span class="label">Sts</span>
+                    <span style="color:#ccc">/</span>
+                    <span id="rowDisplay">0</span> <span class="label">Rows</span>
+                </div>
+                <div class="step-controls" id="stepContainer">
+                    <button class="step-btn active" onclick="setStep(1, this)">1</button>
+                    <button class="step-btn" onclick="setStep(3, this)">3</button>
+                    <button class="step-btn" onclick="setStep(5, this)">5</button>
+                    <button class="step-btn" onclick="setStep(10, this)">10</button>
+                </div>
+                <div class="action-controls">
+                    <button class="big-action-btn" onclick="applyStep(-1)">-</button>
+                    <button class="big-action-btn" onclick="applyStep(1)">+</button>
+                </div>
+                <button class="reset-text-btn" onclick="resetCounter()">Reset All</button>
+            </div>
+            <button class="tool-launcher-btn" onclick="saveAndGoToSwatch(this)">Open Swatch Calculator</button>
+        </div>
+    </main>
+
+    <div id="imageModal" class="image-modal-overlay" style="display: none;">
+        <span class="close-image-btn" onclick="closeImageModal()">&times;</span>
+        <img class="full-size-image" id="fullImageDisplay" alt="Expanded project photo">
+        <div class="zoom-controls">
+            <button onclick="adjustZoom(-0.5)">-</button>
+            <button onclick="resetZoom()">Reset</button>
+            <button onclick="adjustZoom(0.5)">+</button>
+        </div>
+    </div>
+
+<script type="module" src="project.js"></script>
+</body>
+</html>

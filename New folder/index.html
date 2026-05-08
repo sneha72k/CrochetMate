@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yarn Project Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Force page-specific height and background */
+        body { overflow: hidden; }
+        .main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0e2e1;
+        }
+    </style>
+</head>
+<body class="flex h-full">
+
+<aside class="sidebar">
+    <div class="logo-header">
+        <img src="Mate.png" alt="CrochetMate Logo" class="logo-img">
+    </div>
+    
+    
+    <nav class="nav-container">
+        <button class="nav-btn active-nav" onclick="location.href='index.html'">Home</button>
+        <button class="nav-btn" onclick="location.href='yarn.html'">Yarn</button>
+        <button class="nav-btn" onclick="location.href='tool.html'">Tools</button>
+        <button class="nav-btn" onclick="location.href='ai.html'">Yarn Estimator</button> 
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="top-bar">
+        <button class="action-btn" onclick="addNewProject()">New</button>     
+        <button class="action-btn" onclick="toggleDeleteMode(this)">Delete</button>     
+        
+        <div style="position: relative; display: inline-block;">
+            <button class="action-btn" onclick="toggleSortMenu()">Sort ▾</button>
+            <div id="sortMenu" class="dropdown-menu">
+                <button onclick="applySort('newest')">Date (Newest)</button>
+                <button onclick="applySort('oldest')">Date (Oldest)</button>
+                <button onclick="applySort('az')">Name (A-Z)</button>
+                <button onclick="applySort('za')">Name (Z-A)</button>
+                <button onclick="applySort('status')">Status (Plan → Done)</button>
+            </div>
+        </div>
+
+        <div class="swatch-account-group">
+            <button class="action-btn swatch-btn" onclick="location.href='quickswatch.html'">Swatch Calculator</button>
+            
+            <div class="account-container">
+                <a href="account.html" class="profile-trigger">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </a>
+                <div class="account-hover-card">
+                    <p><strong>User:</strong> <span id="user-display-name">sneha</span></p>
+                    <p><strong>Email:</strong> <span id="user-display-email">...</span></p>
+                    <button class="hover-logout-btn" onclick="handleLogout(event)">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardView">
+        <div id="emptyState" class="welcome-container" style="display: none;">
+            <h2 class="welcome-title">Welcome to Crochet Mate</h2>
+            <p class="welcome-text">Start organizing your projects by clicking the "New" button.</p>
+        </div>
+
+        <div id="gridContainer" class="project-grid" style="display: none;">
+            </div>
+    </div>
+</main>
+
+<script type="module" src="style.js"></script>
+</body>
+</html>

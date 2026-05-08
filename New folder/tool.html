@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrochetMate | Tools</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Force font consistency */
+       
+
+        .top-bar .action-btn, 
+        .dropdown-menu button, 
+        .tools-header-row, 
+        .hover-logout-btn, 
+        .account-container strong {
+            font-family: 'Sansita', sans-serif;
+        }
+
+        .search-box, 
+        .tools-text, 
+        #user-display-name, 
+        #user-display-email {
+            font-family: 'Trocchi', serif;
+        }
+
+        body { overflow: hidden; }
+
+        .main-content {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0e2e1;
+        }
+
+        /* Swatch + Account Alignment */
+        .swatch-account-group {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .swatch-btn {
+            background: #fae2e7 !important;
+            border: 1px solid #5a174c !important;
+            color: #5a174c !important;
+            padding: 8px 18px;
+            height: 42px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body class="flex h-full">
+
+<aside class="sidebar">
+    <div class="logo-header">
+        <img src="Mate.png" alt="CrochetMate Logo" class="logo-img">
+    </div>
+    
+    <nav class="nav-container">
+        <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+        <button class="nav-btn" onclick="location.href='yarn.html'">Yarn</button>
+        <button class="nav-btn active-nav" onclick="location.href='tool.html'">Tools</button>
+        <button class="nav-btn" onclick="location.href='ai.html'">Yarn Estimator</button> 
+    </nav>
+</aside>
+
+<main class="main-content">
+    <div class="top-bar">
+        <button class="action-btn" onclick="location.href='tools_details_form.html'">New</button>
+        <button class="action-btn" id="deleteBtn" onclick="toggleDeleteMode(this)">Delete</button>
+
+        <div style="position: relative;">
+            <button class="action-btn" onclick="toggleSortMenu()">Sort ▾</button>
+            <div id="sortMenu" class="dropdown-menu">
+                <button onclick="sortTools('crochet')">Crochet Hooks</button>
+                <button onclick="sortTools('knit')">Knitting Needles</button>
+                <button onclick="sortTools('material')">Material (A-Z)</button>
+                <button onclick="sortTools('sizeAsc')">Size (Small → Large)</button>
+                <button onclick="sortTools('sizeDesc')">Size (Large → Small)</button>
+                <hr style="border: 0; border-top: 1px solid rgba(90, 23, 76, 0.1); margin: 5px 0;">
+                <button onclick="sortTools('all')">Show All</button>
+            </div>
+        </div>
+
+        <input type="text" id="searchTools" class="search-box" placeholder="Search Tools...">
+        
+        <div class="swatch-account-group">
+            
+            <div class="account-container">
+                <a href="account.html" class="profile-trigger">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                </a>
+                <div class="account-hover-card">
+                    <p><strong>User:</strong> <span id="user-display-name">sneha</span></p>
+                    <p><strong>Email:</strong> <span id="user-display-email">...</span></p>
+                    <button class="hover-logout-btn" onclick="handleLogout(event)">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-container" id="toolsContainer" style="flex: 1; overflow-y: auto;">
+        <div class="tools-header-row">
+            <div>Type</div>
+            <div>Brand</div>
+            <div>Material</div>
+            <div>Size</div>
+        </div>
+        </div>
+</main>
+
+    <script type="module">
+  import { supabase } from './supabase-config.js';
+
+// Logic remains identical to your search/Supabase/Sorting script
+async function displayUserProfile() {
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return;
+
+    const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('username')
+        .eq('email', user.email)
+        .single();
+
+    const nameEl = document.getElementById('user-display-name');
+    const emailEl = document.getElementById('user-display-email');
+
+    if (nameEl) nameEl.textContent = profile?.username || 'sneha';
+    if (emailEl) emailEl.textContent = user.email;
+}
+
+window.handleLogout = async function(event) {
+    if (event) event.preventDefault();
+    await supabase.auth.signOut();
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
+
+function searchTools() {
+    const searchInput = document.getElementById("searchTools");
+    const rows = document.querySelectorAll(".tools-row");
+    if (!searchInput) return;
+    const val = searchInput.value.toLowerCase().trim();
+
+    rows.forEach(row => {
+        const content = row.textContent.toLowerCase();
+        if (val === "" || content.includes(val)) {
+            row.style.setProperty("display", "grid", "important");
+        } else {
+            row.style.setProperty("display", "none", "important");
+        }
+    });
+}
+
+async function loadToolRecords() {
+    const { data, error } = await supabase
+        .from('tools')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error("Error loading tools:", error);
+    } else {
+        renderTools(data);
+    }
+}
+
+let deleteMode = false;
+function toggleDeleteMode(btn) {
+    const container = document.getElementById("toolsContainer");
+    deleteMode = !deleteMode;
+    container.classList.toggle("delete-active");
+
+    if (deleteMode) {
+        btn.innerText = "Confirm Delete";
+        btn.style.backgroundColor = "#ff4d4d"; 
+        btn.style.color = "white";
+    } else {
+        deleteSelectedTools(); 
+        btn.innerText = "Delete";
+        btn.style.backgroundColor = ""; 
+        btn.style.color = "";
+    }
+}
+
+async function deleteSelectedTools() {
+    const selectedRows = document.querySelectorAll(".selected-for-delete");
+    const idsToDelete = Array.from(selectedRows).map(row => row.getAttribute('data-id'));
+
+    if (idsToDelete.length > 0) {
+        const { error } = await supabase.from('tools').delete().in('id', idsToDelete);
+        if (error) alert("Error deleting tools");
+        else loadToolRecords(); 
+    }
+}
+
+function renderTools(listToDisplay) {
+    const container = document.getElementById("toolsContainer");
+    const oldRows = document.querySelectorAll(".tools-row");
+    oldRows.forEach(row => row.remove());
+
+    listToDisplay.forEach((tool) => {
+        const row = document.createElement("div");
+        row.className = "tools-row";
+        row.setAttribute('data-id', tool.id); 
+        row.onclick = (e) => {
+            if (document.getElementById("toolsContainer").classList.contains("delete-active")) {
+                row.classList.toggle("selected-for-delete");
+            } else {
+                window.location.href = `tools_details_form.html?edit=${tool.id}`;
+            }
+        };
+        row.innerHTML = `
+            <div class="tools-text">${tool.type || "N/A"}</div>
+            <div class="tools-text">${tool.brand || "N/A"}</div>
+            <div class="tools-text">${tool.material || "N/A"}</div>
+            <div class="tools-text">${tool.size || "N/A"}</div>
+        `;
+        container.appendChild(row);
+    });
+}
+
+window.onload = async () => {
+    await loadToolRecords();
+    await displayUserProfile();
+    const searchInput = document.getElementById("searchTools");
+    if (searchInput) searchInput.addEventListener("input", searchTools);
+};
+
+function toggleSortMenu() {
+    document.getElementById("sortMenu").classList.toggle("show");
+}
+
+async function sortTools(type) {
+    const { data: toolList, error } = await supabase.from('tools').select('*');
+    if (error) return;
+    let filteredList = [...toolList];
+
+    if (type === 'crochet') filteredList = filteredList.filter(t => t.type === "Crochet Hook");
+    else if (type === 'knit') filteredList = filteredList.filter(t => t.type.includes("Needles"));
+    else if (type === 'material') filteredList.sort((a, b) => (a.material || "").localeCompare(b.material || ""));
+    else if (type === 'sizeAsc') filteredList.sort((a, b) => parseFloat(a.size || 0) - parseFloat(b.size || 0));
+    else if (type === 'sizeDesc') filteredList.sort((a, b) => parseFloat(b.size || 0) - parseFloat(a.size || 0)); 
+
+    renderTools(filteredList);
+    document.getElementById("sortMenu").classList.remove("show");
+}
+</script>
+</body>
+</html>

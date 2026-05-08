@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CrochetMate</title>
+   <style>
+    /* 1. Global Centering */
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100%;
+        background-color: #f0e2e1; /* Main Background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    /* 2. Compact Brutalist Card */
+    .login-card {
+        width: 90%; /* Responsive width for mobile */
+        max-width: 350px; /* Slightly smaller to prevent touching ends */
+        padding: 30px;
+        background: #f0e2e1; /* Sidebar Pink */
+        border: 1px solid #5a174c; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .login-card h2 {
+        font-family: 'Sansita', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #5a174c;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    /* 3. Input Groups */
+    .login-input-group {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 15px;
+    }
+
+    .login-input-group label {
+        font-family: 'Sansita', sans-serif;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #5a174c;
+        text-transform: uppercase;
+    }
+
+    .login-input-group input {
+        font-family: 'Trocchi', serif;
+        width: 100%;
+        padding: 8px 0;
+        border: none;
+        border-bottom: 2px solid #5a174c; /* Matching Project Form underlines */
+        background: transparent;
+        font-size: 1rem;
+        color: #4A4447;
+        outline: none;
+    }
+
+    /* 4. Action Button */
+    .login-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: #5a174c;
+        color: #ffffff;
+        border: none;
+        font-family: 'Sansita', sans-serif;
+        font-weight: bold;
+        font-size: 1rem;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.2s;
+    }
+
+    .login-btn:hover {
+        background-color: #6b3353;
+        transform: translateY(-2px);
+    }
+
+    .signup-link {
+        font-family: 'Sansita', sans-serif;
+        font-size: 0.8rem;
+        margin-top: 15px;
+        color: #4A4447;
+    }
+
+    .signup-link a {
+        color: #5a174c;
+        font-weight: bold;
+        text-decoration: none;
+    }
+</style>
+
+<body>
+    <div class="login-card">
+        
+        <h2>Create Account</h2>
+        
+        <form id="signupForm" style="width: 100%;">
+            <div class="login-input-group">
+                <label>Username</label>
+                <input type="text" id="new-username" required>
+            </div>
+            <div class="login-input-group">
+                <label>Email</label>
+                <input type="email" id="new-email" required>
+            </div>
+            <div class="login-input-group">
+                <label>Password</label>
+                <input type="password" id="new-password" required minlength="6">
+            </div>
+            <div class="login-input-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirm-password" required>
+            </div>
+            <button type="submit" class="login-btn" id="signupBtn">Sign Up</button>
+        </form>
+        
+        <p class="signup-link">Already have an account? <a href="login.html">Login</a></p>
+    </div>
+    
+    
+
+    <script type="module">
+        import { supabase } from './supabase-config.js';
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('new-username').value.trim();
+            const email = document.getElementById('new-email').value.trim();
+            const password = document.getElementById('new-password').value;
+            const confirm = document.getElementById('confirm-password').value;
+            const btn = document.getElementById('signupBtn');
+
+            if (password !== confirm) return alert("Passwords do not match!");
+            
+            btn.innerText = "Creating account...";
+
+            // 1. Check if username is taken
+            const { data: existing } = await supabase.from('user_profiles').select('username').eq('username', username).single();
+            if (existing) {
+                btn.innerText = "Sign Up";
+                return alert("Username already taken!");
+            }
+
+            // 2. Register User
+            const { error: authError } = await supabase.auth.signUp({ email, password, options: { data: { username } } });
+            if (authError) {
+                btn.innerText = "Sign Up";
+                return alert(authError.message);
+            }
+
+            // 3. Save to Lookup Table
+            await supabase.from('user_profiles').insert([{ username, email }]);
+            
+            alert("Success! Now please log in.");
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

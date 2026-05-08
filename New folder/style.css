@@ -1,0 +1,1166 @@
+/* ========================================= */
+/* 0. FONTS & EXTERNAL ASSETS                */
+/* ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=Trocchi&display=swap');
+
+@font-face {
+    font-family: 'March Rough';
+    src: url('fonts/March-Rough.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* ========================================= */
+/* 2. LOGIN & SIGNUP PAGE                    */
+/* ========================================= */
+.login-page {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: #f0e2e1;
+    overflow: hidden;
+}
+
+.split-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Shifting the login area to the left */
+.login-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    z-index: 2;
+}
+
+/* THE RIGHT SIDE IMAGE */
+.image-section {
+    flex: 1.5; /* Give the image side more room */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0e2e1; 
+    padding: 10px; /* Reduced padding to let the image grow */
+}
+
+.hero-image-wrapper {
+    width: 98%;
+    height: auto; /* Changed from fixed % to auto */
+    max-height: 95vh; /* Prevents it from being taller than the screen */
+    aspect-ratio: 4 / 3; /* Matches the typical shape of your yarn image */
+    border-radius: 40px; /* Increased for that softer look */
+    overflow: hidden;
+    box-shadow: 20px 20px 60px rgba(90, 23, 76, 0.15);
+}
+
+.hero-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    display: block;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border: none;
+    background: #f0e2e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0px 0px 0px 6px #5a174c;
+}
+
+.login-logo {
+    margin-bottom: 10px;
+    width: 100px;
+    height: 60px;
+}
+
+.login-card h2 {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    color: #4A4447;
+}
+
+.login-input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.login-input-group label {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #4A4447;
+    text-transform: uppercase;
+}
+
+.login-input-group input {
+    font-family: 'Trocchi', serif; /* User text: Trocchi */
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #5a174c;
+    font-size: 1rem;
+    outline: none;
+    transition: background 0.2s;
+    background-color: #f0e2e1;
+    color: #4A4447;
+}
+
+.login-input-group input:focus {
+    background-color: #d6aec6;
+}
+
+.login-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    width: 100%;
+    padding: 12px;
+    background-color: #5a174c;
+    color: #f0e2e1;           
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #d6aec6;
+    color: #4A4447;           
+}
+
+.signup-link { font-family: 'Sansita', sans-serif; font-size: 0.8rem; margin-top: 10px; color: #4A4447; }
+.signup-link a { color: #4A4447; font-weight: bold; text-decoration: none; }
+
+
+/* ========================================= */
+/* 1. LAYOUT & SIDEBAR                       */
+/* ========================================= */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: #f0e2e1;
+    color: #4A4447;
+    font-family: 'Sansita', sans-serif;
+    display: flex; 
+    height: 100vh;
+    overflow: hidden; /* Prevent body scroll to keep sidebar fixed */
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #fae2e7;
+    border-right: 1px solid rgba(90, 23, 76, 0.1); 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    flex-shrink: 0;
+}
+
+.logo-header {
+    padding: 20px 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-badge {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.sidebar-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #5a174c;
+    letter-spacing: -0.5px;
+    text-align: left;
+    padding-left: 20px; /* Gives the logo some breathing room from the edge */
+}
+
+.nav-container {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Remove align-items: center so buttons can touch the left edge */
+    align-items: flex-start; 
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 15px 25px; /* Increased left padding to align text nicely */
+    border: none;
+    background: transparent;
+    font-family: 'March Rough', sans-serif;
+    font-size: 1.3rem;
+    color: #5a174c;
+    cursor: pointer;
+    transition: 0.2s;
+    /* Text-align left matches the image style better than center */
+    text-align: left; 
+}
+
+.nav-btn:hover {
+    background-color: rgba(90, 23, 76, 0.05);
+    /* Soft pill shape on hover too */
+    border-radius: 0 50px 50px 0; 
+}
+
+.active-nav {
+    /* Your specific Dark Plum from the image */
+    background-color: #6b3353 !important; 
+    color: #ffffff !important;
+    
+    /* THE KEY: Flush left, Rounded right */
+    border-radius: 0 50px 50px 0 !important; 
+    
+    /* Occupies most of the width but leaves a small gap on the right */
+    width: 92% !important; 
+    
+    /* Ensures it sticks to the left wall */
+    margin: 5px 0; 
+    
+    /* Adds a slight shadow like in your earlier "pop" version */
+    box-shadow: 2px 4px 10px rgba(107, 51, 83, 0.2);
+}
+
+/* ========================================= */
+/* 2. MAIN DASHBOARD & TOP BAR               */
+/* ========================================= */
+.main-content {
+    flex: 1;
+    background-color: #f0e2e1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+}
+.top-bar {
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    /* Reduce or remove this gap to bring the two elements closer */
+    gap: 8px; 
+    border-bottom: 1px solid rgba(90, 23, 76, 0.1); 
+    position: relative;
+    z-index: 100;
+}
+
+.swatch-btn {
+    /* This pushes the button and the icon following it to the far right */
+    margin-left: auto; 
+    
+    background: #fae2e7 !important;
+    border: 1px solid #5a174c !important;
+    color: #5a174c !important;
+    padding: 8px 18px;
+    height: 42px; /* Matching the height of the profile icon for perfect alignment */
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Sansita', sans-serif;
+}
+  .swatch-account-group {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+.account-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Ensure there is no extra margin pushing it away */
+    margin-left: 0; 
+}
+
+.profile-trigger {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid #5a174c;
+    background: #fae2e7;
+    color: #5a174c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn {
+    background: #e9d5da;
+    border: 1px solid #d1b1bb;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #5a174c;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: 'Sansita', sans-serif;
+}
+
+
+
+/* ========================================= */
+/* 3. DASHBOARD VIEW & WELCOME CENTER        */
+/* ========================================= */
+
+/* The wrapper needs to fill the height left by the top-bar */
+#dashboardView {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+    width: 100%;
+}
+
+/* This targets the Welcome area when no projects exist */
+#emptyState {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    
+    /* THE GOLDEN ALIGNMENT: Dead Center */
+    justify-content: center; /* Vertical */
+    align-items: center;     /* Horizontal */
+    
+    text-align: center;
+    width: 100%;
+    height: 100%; /* Important: fill the parent */
+}
+
+.welcome-title {
+    font-size: 2.2rem; 
+    font-weight: 800;
+    color: #5a174c;
+    margin: 0;
+}
+
+.welcome-text {
+    font-family: 'Trocchi', serif;
+    color: #4A4447;
+    max-width: 450px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    opacity: 0.85;
+}
+
+/* The Grid area when projects DO exist */
+#gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+/* ========================================= */
+/* 4. DROPDOWN & DELETE MODES                */
+/* ========================================= */
+/* --- PROJECT GRID --- */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+    padding: 40px;
+    /* Use 'auto' instead of 'scroll' to keep things clean */
+    overflow-y: auto; 
+}
+
+/* --- ADDED: BASE PROJECT CARD STYLE --- */
+.project-card {
+    width: 100%;
+    min-height: 120px;
+    border: 2px solid #5a174c; /* Your Plum Border */
+    background: #fae2e7;       /* Your Rose Background */
+    padding: 20px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    position: relative;
+    box-shadow: 4px 4px 0px #5a174c; /* The signature shadow */
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.project-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #5a174c;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column; 
+    gap: 8px; 
+    width: 100%;
+    align-items: flex-start; /* Aligns text to the left inside the card */
+    text-align: left;
+}
+
+.card-title {
+    font-family: 'Trocchi', serif;
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #4A4447;
+}
+
+/* --- DELETE MODE & SELECTION --- */
+.delete-checkbox {
+    display: none; 
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 100;
+    accent-color: #5a174c; 
+    filter: drop-shadow(0px 0px 2px rgba(240, 226, 225, 0.8)); 
+}
+
+.project-grid.delete-active .delete-checkbox {
+    display: block;
+}
+
+.project-grid.delete-active .project-card {
+    border: 2px dashed #5a174c; /* Dash effect when deleting */
+}
+
+.project-card.selected {
+    border: 3px solid #5a174c !important; 
+    background-color: #d6aec6 !important; /* Slightly darker pink when selected */
+    transform: scale(0.98);
+}
+
+/* --- DROPDOWN MENUS --- */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0;
+    width: 160px;
+    background-color: #f0e2e1;
+    border: 1px solid #5a174c;
+    border-radius: 8px;
+    z-index: 100; /* Increased to stay above grid cards */
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-menu.show { display: flex; }
+
+.dropdown-menu button {
+    padding: 10px; border: none; background: transparent;
+    text-align: left; cursor: pointer; color: #5a174c;
+    font-family: 'Sansita', sans-serif;
+}
+
+.dropdown-menu button:hover { background-color: #fae2e7; }
+
+/* --- ACCOUNT HOVER CARD --- */
+.account-hover-card {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background: #f0e2e1;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1.5px solid #5a174c;
+    box-shadow: 0 4px 15px rgba(90, 23, 76, 0.15);
+    z-index: 9999;
+    min-width: 220px;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.account-container:hover .account-hover-card {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+/* ========================================= */
+/* 4. PROJECT PAGE (Main Workspace)          */
+/* ========================================= */
+
+.project-container {
+    display: flex;
+    width: 100%; 
+    margin: 0; 
+    padding: 20px; 
+    gap: 50px;
+    background-color: #f0e2e1;
+    box-sizing: border-box; 
+}
+
+
+/* --- Left Panel (Inputs, Notes, Done) --- */
+.left-panel {
+    position: relative;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.form-group {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #4A4447;
+}
+
+.form-group input {
+    font-family: 'Trocchi', serif; /* User Written */
+    border: none;
+    border-bottom: 2px solid #5a174c;
+    padding: 8px;
+    font-size: 1rem;
+    flex: 1;
+    outline: none;
+    background: transparent;
+    color: #4A4447;
+}
+
+/* Notes Section */
+.notes-wrapper {
+    position: relative;
+    border: 3px solid #5a174c;
+    height: 350px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0e2e1;
+    overflow-y: auto; 
+}
+
+.notes-box {
+    width: 100%;
+    min-height: 100px;
+    outline: none;
+    font-family: 'Trocchi', serif; /* User text: Trocchi */
+    font-size: 1rem;
+    cursor: text;
+    border: none;
+    color: #4A4447;
+}
+.notes-box:empty:before {
+    content: attr(placeholder);
+    color: #4A4447;
+    opacity: 0.6;
+    display: block;
+}
+
+/* Image Uploads */
+.add-image-btn {
+    font-family: 'Sansita', sans-serif; 
+    top: 15px; right: 15px;
+    background: none; border: none;
+    font-weight: bold; cursor: pointer;
+    text-decoration: underline;
+    color: #4A4447;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; right: 0;
+    width: 100px;
+    background-color: #f0e2e1;
+    border: 2px solid #5a174c;
+    box-shadow: 4px 4px 0px rgba(90, 23, 76, 0.2);
+    z-index: 10;
+    flex-direction: column;
+}
+.dropdown-menu.show { display: flex; }
+.dropdown-menu button {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    padding: 10px; border: none; background: #f0e2e1;
+    text-align: left; cursor: pointer; border-bottom: 1px solid #5a174c;
+    color: #4A4447;
+}
+.dropdown-menu button:hover { background-color: #d6aec6; }
+
+.image-gallery {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;
+}
+.uploaded-img {
+    width: 80px; height: 80px; object-fit: cover;
+    border: 1px solid #5a174c; border-radius: 5px; cursor: pointer;
+}
+
+/* Bottom Actions (Done Button) */
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    width: 100%;
+    padding-top: 15px;
+}
+
+.time-container { font-family: 'Sansita', sans-serif; font-weight: bold; color: #4A4447; }
+
+.done-btn-simple {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    background-color: #5a174c; color: #f0e2e1;
+    border: none; padding: 8px 20px;
+    font-weight: bold; text-transform: uppercase;
+    font-size: 0.9rem; cursor: pointer;
+    border-radius: 4px;
+}
+.done-btn-simple:hover { background-color: #d6aec6; color: #4A4447; }
+
+.floating-done-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    position: absolute; bottom: 15px; right: 15px;
+    background-color: #5a174c; color: #4A4447;
+    border: none; padding: 8px 16px;
+    font-weight: bold; text-transform: uppercase;
+    font-size: 0.9rem; cursor: pointer;
+    box-shadow: 3px 3px 0px rgba(90, 23, 76, 0.2);
+}
+.floating-done-btn:hover { background-color: #d6aec6; color: #4A4447; }
+
+/* --- Right Panel (Tools) --- */
+.right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.tool-box {
+    border: 3px solid #5a174c;
+    padding: 20px;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+    background: #f0e2e1;
+}
+
+.tool-launcher-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    width: 100%; padding: 15px;
+    background-color: #5a174c; border: 3px solid #5a174c;
+    font-weight: bold; cursor: pointer; text-transform: uppercase;
+    transition: transform 0.1s, box-shadow 0.1s;
+    color: #f0e2e1;
+}
+.tool-launcher-btn:hover{
+    background-color: #d6aec6;
+    color: #4A4447;
+}
+.tool-launcher-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px #5a174c;
+}
+
+/* Timer Styles */
+.timer-display {
+    font-family: 'Courier New', monospace;
+    font-size: 2.2rem; font-weight: bold; margin: 5px 0;
+    color: #4A4447;
+}
+.timer-controls button {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    padding: 5px 20px; border: 2px solid #5a174c;
+    background: #d6aec6; cursor: pointer; font-weight: bold;
+    margin: 0 5px;
+    color: #4A4447;
+}
+.timer-controls button:hover { background: #5a174c; color: #d6aec6; }
+
+.add-time-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    width: 100%; margin-top: 15px; padding: 10px;
+    background-color: #5a174c; color: #f0e2e1;
+    border: 2px solid #5a174c;    font-weight: bold; cursor: pointer;
+    text-transform: uppercase; font-size: 0.9rem;
+}
+.add-time-btn:hover { background-color: #d6aec6; color: #4A4447; }
+
+/* ========================================= */
+/* IMAGE MODAL (BRUTALIST UPDATE)            */
+/* ========================================= */
+.image-modal-overlay {
+    display: none;
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; 
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(90, 23, 76, 0.95); 
+    overflow: hidden;
+    justify-content: center; 
+    align-items: center;
+}
+
+.full-size-image {
+    max-width: 90%; 
+    max-height: 90%;
+    border: 3px solid #f0e2e1; 
+    box-shadow: 10px 10px 0px #5a174c;
+    transition: transform 0.1s ease-out; 
+    cursor: grab;
+    user-select: none; 
+    -webkit-user-drag: none; 
+}
+
+.full-size-image:active {
+    cursor: grabbing;
+}
+
+.close-image-btn {
+    position: absolute; 
+    top: 20px; 
+    right: 30px;
+    color: #f0e2e1; 
+    font-size: 50px; 
+    font-weight: 900;
+    cursor: pointer; 
+    z-index: 2001;
+}
+
+.close-image-btn:hover {
+    color: #d6aec6; 
+}
+
+/* Updated Zoom Controls to match your Action Buttons */
+.zoom-controls {
+    position: absolute; 
+    bottom: 40px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    display: flex; 
+    gap: 15px; 
+    z-index: 2001;
+}
+
+.zoom-controls button {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    background: #d6aec6; 
+    border: 2px solid #5a174c;
+    font-weight: bold; 
+    font-size: 1.2rem;
+    min-width: 50px; 
+    height: 50px;
+    cursor: pointer; 
+    box-shadow: 4px 4px 0px #5a174c;
+    color: #4A4447;
+}
+
+/* ========================================= */
+/* 5. SWATCH & STITCH TOOLS (Standalone)     */
+/* ========================================= */
+
+.counter-settings {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; width: 100%; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px;
+    color: #4A4447;
+}
+
+.counter-settings input {
+    font-family: 'Trocchi', serif;
+    width: 50px; padding: 2px; border: none;
+    border-bottom: 2px solid #5a174c; text-align: center;
+    font-weight: bold; font-size: 0.9rem; background: transparent;
+    color: #4A4447;
+}
+
+.counter-display-wrapper {
+    display: flex; flex-direction: row;
+    align-items: baseline; justify-content: center;
+    gap: 8px; margin-bottom: 15px;
+    font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.2rem;
+    color: #4A4447;
+}
+.counter-display-wrapper span[id$="Display"] { font-size: 1.4rem; font-weight: 900; }
+.counter-display-wrapper .label { font-family: 'Sansita', sans-serif; font-size: 0.8rem; color: #4A4447; text-transform: uppercase; }
+
+.step-controls {
+    display: flex; gap: 5px; width: 100%;
+    justify-content: space-between; margin-bottom: 5px;
+}
+.step-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    flex: 1; height: 30px; border: 1px solid #5a174c;
+    background: #f0e2e1; border-radius: 15px;
+    cursor: pointer; font-weight: bold; font-size: 0.8rem;
+    transition: all 0.2s;
+    color: #4A4447;
+}
+.step-btn.active { background: #d6aec6; color: #4A4447; }
+
+.action-controls { display: flex; gap: 5px; width: 100%; }
+.big-action-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    flex: 1; padding: 2px 0; height: 35px;
+    font-size: 1.5rem; font-weight: bold;
+    background: #d6aec6; border: 2px solid #5a174c; border-radius: 8px;
+    cursor: pointer; display: flex; align-items: center;
+    justify-content: center; line-height: 0;
+    color: #4A4447;
+}
+.big-action-btn:active { background: #5a174c; color: #4A4447; }
+
+.reset-text-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    background: none; border: none; color: #4A4447;
+    font-size: 0.7rem; text-decoration: underline;
+    cursor: pointer; margin-top: 10px;
+}
+
+/* ========================================= */
+/* 6. YARN PAGE TABLE STRUCTURE              */
+/* ========================================= */
+
+.yarn-container {
+    width: 100%;
+    padding: 40px;
+}
+
+/* spacing + lines */
+.yarn-header-row {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    padding: 10px 0;
+    border-bottom: 2px solid #5a174c;
+    font-weight: bold;
+    color: #4A4447;
+}
+
+.yarn-row {
+    padding: 18px 0;
+    border-bottom: 1px solid #5a174c;
+    color: #4A4447;
+}
+
+/* checkbox */
+.yarn-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #5a174c;
+    appearance: none;
+    background: #f0e2e1;
+    cursor: pointer;
+}
+
+.yarn-checkbox:checked {
+    background: #5a174c;
+}
+
+/* input fields */
+.yarn-input {
+    font-family: 'Trocchi', serif; /* User entry: Trocchi */
+    border: none;
+    border-bottom: 2px solid #5a174c;
+    padding: 6px;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    width: 90%;
+    color: #4A4447;
+}
+
+.yarn-input::placeholder {
+    color: #4A4447;
+    opacity: 0.5;
+}
+
+/* ========================================= */
+/* 7. TOOLS PAGE TABLE STRUCTURE             */
+/* ========================================= */
+
+.tools-container {
+    width: 100%;
+    padding: 40px;
+}
+
+.tools-header-row {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 2px solid #5a174c;
+    font-weight: bold;
+    color: #4A4447;
+}
+
+.tools-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #5a174c;
+    color: #4A4447;
+}
+
+.tools-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #5a174c;
+    appearance: none;
+    cursor: pointer;
+    background: #f0e2e1;
+}
+
+.tools-checkbox:checked {
+    background: #5a174c;
+}
+
+.tools-input {
+    font-family: 'Trocchi', serif; /* User entry: Trocchi */
+    border: none;
+    border-bottom: 2px solid #5a174c;
+    padding: 5px;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    width: 90%;
+    color: #4A4447;
+}
+
+.tools-input::placeholder {
+    color: #4A4447;
+    opacity: 0.5;
+}
+
+.account-container {
+    position: relative;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.profile-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 38px;
+    background: transparent;
+    border-radius: 5px;
+    color: #4A4447;
+    text-decoration: none;
+    border: 1px solid #5a174c;
+    transition: all 0.2s;
+}
+
+
+
+
+.hover-logout-btn {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    width: 100%;
+    background: #5a174c;
+    color: #f0e2e1;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.hover-logout-btn:hover {
+    background: #d6aec6;
+    color: #4A4447;
+}
+
+.account-card-large {
+    background: #f0e2e1;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #5a174c; 
+    box-shadow: 0 4px 20px rgba(90, 23, 76, 0.05);
+    text-align: center;
+    color: #4A4447;
+}
+
+.large-avatar {
+    width: 80px;
+    height: 80px;
+    background: #d6aec6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    border: 1px solid #5a174c;
+    color: #4A4447;
+}
+
+.profile-header h2 {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    margin: 10px 0 5px;
+    font-size: 1.5rem;
+    color: #4A4447;
+}
+
+.profile-header p {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    color: #4A4447;
+    opacity: 0.7;
+    margin: 0;
+}
+
+.detail-row {
+    font-family: 'Trocchi', serif; /* User text: Trocchi */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px inset #5a174c;
+    font-size: 0.95rem;
+    color: #4A4447;
+}
+
+.yarn-container, .tools-container {
+    width: 100%;
+    padding: 20px 40px;
+}
+
+.yarn-header-row, .yarn-row {
+    display: grid ;
+    grid-template-columns: 80px 1fr 1fr 1fr 1fr ; 
+    align-items: center;
+    width: 100%;
+}
+
+.tools-header-row, .tools-row {
+    display: grid ;
+    grid-template-columns: 1fr 1fr 1fr 1fr ; 
+    align-items: center;
+    padding: 15px 10px;
+    width: 100%;
+    gap: 20px;
+}
+
+.yarn-header-row div, .yarn-text, .color-cell,
+.tools-header-row div, .tools-text {
+    font-family: 'Trocchi', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.yarn-header-row, .tools-header-row {
+    font-family: 'Sansita', sans-serif; /* Updated Font */
+    position: sticky;
+    top: 0;
+    background: #f0e2e1;
+    z-index: 5;
+    border-bottom: 2px solid #5a174c;
+    font-weight: bold;
+    color: #4A4447;
+}
+
+.yarn-row, .tools-row {
+    border-bottom: 1px solid #5a174c;
+    background: #f0e2e1;
+    cursor: pointer;
+    min-height: 40px;
+    color: #4A4447;
+}
+
+.yarn-row:hover, .tools-row:hover {
+    background: #d6aec6;
+}
+
+.selected-for-delete {
+    background-color: #d6aec6 !important; 
+    border-left: 6px solid #5a174c !important; 
+    color: #4A4447 !important;
+}
+
+.delete-checkbox {
+    display: none; 
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: auto;
+}
+
+.delete-active .delete-checkbox {
+    display: block !important;
+}
+
+.highlight-row {
+    background-color: #d6aec6;
+    border-left: 6px solid #5a174c;
+    color: #4A4447;
+}
+
+.yarn-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.yarn-container::-webkit-scrollbar-thumb {
+    background: #5a174c;
+    border-radius: 4px;
+}
+
+.yarn-container::-webkit-scrollbar-thumb:hover {
+    background: #d6aec6;
+}
+
+.yarn-color-box {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px;
+    border: 1px solid #5a174c;
+}
+
+.search-box {
+    font-family: 'Trocchi', serif;
+    padding: 8px 12px;
+    border: 2px solid #5a174c;
+    width: 200px;
+    font-size: 14px;
+    flex-shrink: 0;
+    background: #f0e2e1;
+    color: #4A4447;
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools Details Form</title>
+  
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sansita:wght@400;700;800;900&family=Trocchi&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Sansita', sans-serif;
+      background: #f0e2e1;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+   .form-container {
+  width: 600px;
+  border: 2px solid #5a174c;
+  padding: 25px;
+  border-radius: 10px;
+  background: #f0e2e1;
+  box-shadow: 4px 4px 0px #5a174c;
+}
+
+    h2 {
+  font-family: 'Sansita', sans-serif;
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 26px;
+  text-transform: uppercase;
+}
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+  display: block;
+  font-family: 'Sansita', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  font-size: 15px;
+  border: none;
+  border-bottom: 2px solid #5a174c;
+  outline: none;
+  background: transparent;
+  font-family: 'Trocchi', serif;
+  color: #4A4447;
+}
+
+  input:focus, select:focus {
+  background-color: #d6aec6;
+}
+
+    .btn {
+  font-family: 'Sansita', sans-serif;
+  width: 100%;
+  padding: 10px;
+  background: #5a174c;
+  color: #f0e2e1;
+  border: 2px solid #5a174c;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0px #5a174c;
+  box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+    .btn:hover {
+  background: #d6aec6;
+  color: #4A4447;
+}
+
+    .output-box {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1.5px dashed #000;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .output-box p {
+      margin: 7px 0;
+      font-size: 15px;
+    }
+
+    .output-box span {
+      font-weight: bold;
+    }
+    
+    .hint {
+  font-family: 'Sansita', sans-serif;
+  font-size: 13px;
+  color: #444;
+  margin-top: 5px;
+}
+    /* Updated Button Group Layout */
+.button-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 15px;                      /* Space between buttons */
+    margin-top: 25px;
+}
+
+/* Remove the default full-width margin from buttons inside the group */
+.button-group .btn {
+    width: 100%; 
+    margin-top: 0;                  /* Remove top margin since grid handles it */
+}
+
+/* Style for the Cancel Button */
+.cancel-btn {
+  font-family: 'Sansita', sans-serif;
+  background: #f0e2e1 !important;
+  color: #4A4447 !important;
+  border: 2px solid #5a174c !important;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0px #5a174c;
+}
+
+.cancel-btn:hover {
+  background: #FFFFFF !important;
+  color: #4A4447 !important;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="form-container">
+    <h2>Tools Details</h2>
+
+    <form id="toolsForm">
+      <!-- Type -->
+      <div class="field">
+        <label for="type">Type</label>
+        <select id="type" required>
+          <option value="">Select Type</option>
+          <option value="Crochet Hook">Crochet Hook</option>
+          <option value="Circular Needles">Circular Needles</option>
+          <option value="Straight Needles">Straight Needles</option>
+          <option value="Tunisian Crochet Hook">Tunisian Crochet Hook</option>
+        </select>
+      </div>
+
+      <!-- Brand -->
+      <div class="field">
+        <label for="brand">Brand</label>
+        <input type="text" id="brand" required />
+      </div>
+
+      <!-- Material -->
+      <div class="field">
+        <label for="material">Material</label>
+        <select id="material" required>
+          <option value="">Select Material</option>
+          <option>Aluminum</option>
+          <option>Steel</option>
+          <option>Plastic</option>
+          <option>Bamboo</option>
+          <option>Wood</option>
+          <option>Carbon fiber</option>
+          <option>Acrylic</option>
+          <option>Brass</option>
+        </select>
+      </div>
+
+ <!-- Size -->
+      <div class="field">
+        <label for="size">Size (mm)</label>
+        <input type="text" id="size" required />
+      </div>
+
+           <!-- Wire Length -->
+      <div class="field">
+        <label for="wireLength">Wire Length</label>
+        <input type="text" id="wireLength" />
+      </div>
+
+      <!-- Quantity -->
+      <div class="field">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" required />
+      </div>
+             <!-- Buttons wrapped in a group -->
+      <div class="button-group">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn cancel-btn" onclick="cancelForm()">Cancel</button>
+      </div>
+   
+    </form>
+
+    <!-- Output -->
+    <div class="output-box" id="outputBox">
+      <p><span>Type:</span> <span id="outType"></span></p>
+      <p><span>Brand:</span> <span id="outBrand"></span></p>
+      <p><span>Material:</span> <span id="outMaterial"></span></p>
+      <p><span>Size:</span> <span id="outSize"></span> mm</p>
+      <p><span>Quantity:</span> <span id="outQuantity"></span></p>
+    </div>
+  </div>
+
+
+    <script type="module">
+      import { supabase } from './supabase-config.js';
+
+    // 1. Get the UUID (ID) from the URL instead of an index
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('edit');
+
+    // 2. If editing, pre-fill the form from Supabase
+    window.onload = async function() {
+        if (editId !== null) {
+            // Fetch the specific tool by its ID
+            const { data: item, error } = await supabase
+                .from('tools')
+                .select('*')
+                .eq('id', editId)
+                .single();
+
+            if (error) {
+                console.error("Error fetching tool:", error.message);
+                return;
+            }
+
+            if (item) {
+                document.getElementById("type").value = item.type || "";
+                document.getElementById("brand").value = item.brand || "";
+                document.getElementById("material").value = item.material || "";
+                document.getElementById("size").value = item.size || "";
+                document.getElementById("wireLength").value = item.wire_length || "";
+                document.getElementById("quantity").value = item.quantity || "";
+            }
+        }
+    };
+
+    const form = document.getElementById("toolsForm");
+
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    // Get the current user
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        alert("Session expired. Please log in again.");
+        return;
+    }
+
+    const toolData = {
+        user_id: user.id, // CRITICAL: This links the tool to you
+        type: document.getElementById("type").value,
+        brand: document.getElementById("brand").value,
+        material: document.getElementById("material").value,
+        size: document.getElementById("size").value,
+        wire_length: document.getElementById("wireLength").value || "N/A",
+        quantity: parseInt(document.getElementById("quantity").value)
+    };
+
+    const { error } = await supabase.from('tools').insert([toolData]);
+
+    if (error) {
+        alert("Error saving tool: " + error.message);
+    } else {
+        window.location.href = "tool.html";
+    }
+});
+
+    function cancelForm() {
+        window.location.href = "tool.html";
+    }
+</script>
+
+</body>
+</html>

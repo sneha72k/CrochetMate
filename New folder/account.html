@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - CrochetMate</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 1. Page Specific Centering */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .account-display-container {
+            flex: 1;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+        }
+
+        /* 2. Brutalist Account Card */
+        .account-card-large {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+            background: #fae2e7; /* Matching Sidebar tint */
+            border: 1px solid #5a174c;
+            box-shadow: 4px 4px 0px #5a174c; /* Signature Shadow */
+            text-align: center;
+        }
+
+        .large-avatar {
+            width: 70px;
+            height: 70px;
+            background: #fdf2f4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 1px solid #5a174c;
+        }
+
+        #acc-username {
+            font-family: 'Sansita', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #5a174c;
+            margin-bottom: 5px;
+            text-transform: capitalize;
+        }
+
+        #acc-email {
+            font-family: 'Trocchi', serif;
+            font-size: 1rem;
+            color: #4A4447;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .account-details {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed rgba(90, 23, 76, 0.2);
+            font-family: 'Sansita', sans-serif;
+            color: #4A4447;
+        }
+
+        .detail-row span {
+            font-family: 'Trocchi', serif;
+            font-weight: bold;
+        }
+
+        .hover-logout-btn {
+            margin-top: 35px;
+            width: 100%;
+            padding: 14px;
+            font-family: 'Sansita', sans-serif;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: #6b3353;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .hover-logout-btn:hover {
+            background: #5a174c;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="flex h-full">
+
+        <aside class="sidebar">
+    <div class="logo-header">
+        <img src="Mate.png" alt="CrochetMate Logo" class="logo-img">
+    </div>
+
+        <nav class="nav-container">
+            <button class="nav-btn" onclick="location.href='index.html'">Home</button>
+            <button class="nav-btn" onclick="location.href='yarn.html'">Yarn</button>
+            <button class="nav-btn" onclick="location.href='tool.html'">Tools</button>
+            <button class="nav-btn" onclick="location.href='ai.html'">Yarn Estimator</button> 
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="top-bar">
+            <h2 style="font-family: 'Sansita', sans-serif; font-size: 1.2rem; color: #5a174c;">My Account</h2>
+        </div>
+
+        <div class="account-display-container">
+            <div class="account-card-large">
+                <div class="profile-header">
+                    <div class="large-avatar">
+                        <svg viewBox="0 0 24 24" width="40" height="40" fill="#5a174c">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </div>
+                    <h2 id="acc-username">Loading...</h2>
+                    <p id="acc-email">...</p>
+                </div>
+
+                <div class="account-details">
+                    <div class="detail-row">
+                        <strong>Member Since</strong>
+                        <span id="acc-date">...</span>
+                    </div>
+                    <div class="detail-row">
+                        <strong>Total Projects</strong>
+                        <span id="acc-project-count">0</span>
+                    </div>
+                </div>
+
+                <button class="hover-logout-btn" onclick="handleLogout(event)">Log Out</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="style.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Swatch</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sansita:wght@400;700;800;900&family=Trocchi&display=swap');
+        /* Minimalist Style */
+        body {
+    background-color: #f0e2e1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Sansita', sans-serif;
+    margin: 0;
+    color: #4A4447;
+}
+        .swatch-container {
+    width: 100%;
+    max-width: 420px;
+    background: #f0e2e1;
+    border: 2px solid #5a174c;
+    border-radius: 10px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 4px 4px 0px #5a174c;
+    position: relative;
+}
+        h3 {
+    font-family: 'Sansita', sans-serif;
+    margin: 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: #4A4447;
+}
+        .scratch-label {
+    font-family: 'Sansita', sans-serif;
+    font-size: 0.8rem;
+    color: #4A4447;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+        
+        .unit-toggle-wrapper { position: absolute; top: 25px; right: 25px; display: flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 600; }
+        .toggle-switch { position: relative; display: inline-block; width: 36px; height: 18px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #eee; transition: .3s; border-radius: 18px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background-color: #5a174c; }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        .input-group label {
+    font-family: 'Sansita', sans-serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #4A4447;
+    text-transform: uppercase;
+}
+        .input-group input {
+    height: 36px;
+    border: none;
+    border-bottom: 2px solid #5a174c;
+    font-size: 1rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    font-family: 'Trocchi', serif;
+    color: #4A4447;
+}
+        .input-group input:focus {
+    outline: none;
+    background-color: #d6aec6;
+}
+        .input-group input[readonly] {
+    font-weight: bold;
+}
+        .divider {
+    grid-column: span 2;
+    height: 1px;
+    margin: 5px 0;
+}
+        .section-label {
+    grid-column: span 2;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: -5px;
+    font-family: 'Sansita', sans-serif;
+    color: #4A4447;
+}
+
+        .button-row { display: flex; gap: 10px; margin-top: 10px; }
+        .action-btn {
+    flex: 1;
+    padding: 10px;
+    background: #5a174c;
+    color: #f0e2e1;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Sansita', sans-serif;
+    color: #f0e2e1;
+    text-transform: uppercase;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+      .action-btn:hover {
+        background: #d6aec6;
+        color: #4A4447;
+}  
+    .home-link {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #4A4447;
+    text-decoration: none;
+    margin-top: 5px;
+    cursor: pointer;
+    font-family: 'Sansita', sans-serif;
+}
+    </style>
+</head>
+<body>
+    <div class="swatch-container">
+        <h3>Quick Calc</h3>
+        <div class="scratch-label">Scratchpad Mode</div>
+        
+        <div class="unit-toggle-wrapper">
+            <span>CM</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="unitToggle" onchange="toggleUnits()">
+                <span class="slider"></span>
+            </label>
+            <span>IN</span>
+        </div>
+
+        <div class="input-grid">
+            <div class="input-group"><label>Stitches</label><input type="number" id="swatchSts" oninput="calculate()"></div>
+            <div class="input-group"><label>Rows</label><input type="number" id="swatchRows" oninput="calculate()"></div>
+            <div class="input-group"><label class="unit-label">Width</label><input type="number" id="swatchWidth" oninput="calculate()"></div>
+            <div class="input-group"><label class="unit-label">Height</label><input type="number" id="swatchHeight" oninput="calculate()"></div>
+            
+            <div class="divider"></div>
+            <div class="section-label">Target Size</div>
+            
+            <div class="input-group"><label>Width</label><input type="number" id="reqWidth" oninput="calculate()"></div>
+            <div class="input-group"><label>Height</label><input type="number" id="reqHeight" oninput="calculate()"></div>
+            
+            <div class="section-label">Results</div>
+            <div class="input-group"><input type="text" id="resultSts" readonly></div>
+            <div class="input-group"><input type="text" id="resultRows" readonly></div>
+        </div>
+
+        <div class="button-row">
+            <button class="action-btn" onclick="copySpecs(this)">Copy Swatch to Clipboard</button>
+            <button class="action-btn" onclick="copyResults(this)">Copy Results to Clipboard</button>
+        </div>
+        <a class="home-link" onclick="window.location.href='ai.html'">Go Back</a>
+    </div>
+
+    <script>
+        let currentUnit = "cm"; 
+        
+
+        function toggleUnits() {
+            currentUnit = document.getElementById("unitToggle").checked ? "inches" : "cm";
+            updateLabels();
+            calculate(); 
+        }
+
+        function updateLabels() {
+            const labels = document.querySelectorAll(".unit-label");
+            labels[0].innerText = currentUnit === "cm" ? "Width (cm)" : "Width (in)";
+            labels[1].innerText = currentUnit === "cm" ? "Height (cm)" : "Height (in)";
+        }
+
+        function calculate() {
+            const sts = parseFloat(document.getElementById("swatchSts").value) || 0;
+            const rows = parseFloat(document.getElementById("swatchRows").value) || 0;
+            const sWidth = parseFloat(document.getElementById("swatchWidth").value) || 0;
+            const sHeight = parseFloat(document.getElementById("swatchHeight").value) || 0;
+            const rWidth = parseFloat(document.getElementById("reqWidth").value) || 0;
+            const rHeight = parseFloat(document.getElementById("reqHeight").value) || 0;
+
+            if (sts > 0 && sWidth > 0 && rWidth > 0) {
+                document.getElementById("resultSts").value = Math.round((sts / sWidth) * rWidth) + " Sts";
+            } else { document.getElementById("resultSts").value = ""; }
+
+            if (rows > 0 && sHeight > 0 && rHeight > 0) {
+                document.getElementById("resultRows").value = Math.round((rows / sHeight) * rHeight) + " Rows";
+            } else { document.getElementById("resultRows").value = ""; }
+        }
+
+        function copySpecs(btn) {
+            const sts = document.getElementById("swatchSts").value;
+            const rows = document.getElementById("swatchRows").value;
+            const w = document.getElementById("swatchWidth").value;
+            const h = document.getElementById("swatchHeight").value;
+            const text = `Swatch: ${sts}sts/${rows}rows (${w}${currentUnit}x${h}${currentUnit})`;
+            copyToClipboard(text, btn);
+        }
+
+        function copyResults(btn) {
+            const sts = document.getElementById("resultSts").value;
+            const rows = document.getElementById("resultRows").value;
+            const w = document.getElementById("reqWidth").value;
+            const h = document.getElementById("reqHeight").value;
+            if(!sts && !rows) return;
+            let text = "";
+            if (sts) text += `For ${w}${currentUnit} width: Cast on ${sts}\n`;
+            if (rows) text += `For ${h}${currentUnit} height: Work ${rows}`;
+            copyToClipboard(text, btn);
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerText;
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = orig, 1000);
+            });
+        }
+    </script>
+</body>
+</html>

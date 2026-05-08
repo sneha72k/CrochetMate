@@ -1,0 +1,247 @@
+/* ========================================= */
+/* 1. LAYOUT CONTAINER                       */
+/* ========================================= */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0e2e1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.ai-layout-container {
+    flex: 1;
+    display: flex;
+    gap: 25px;
+    padding: 30px 40px; /* Aligned with top-bar padding */
+    align-items: stretch;
+    overflow: hidden;
+}
+
+/* ========================================= */
+/* 2. TERMINAL HUB (LEFT PANEL)              */
+/* ========================================= */
+.terminal-hub {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    background: #fae2e7; /* Rose Background */
+    border: 1px solid #5a174c; /* Consistent 1px border */
+    box-shadow: 4px 4px 0px #5a174c; /* Signature Shadow */
+}
+
+.terminal-header {
+    background: #5a174c;
+    color: #fae2e7;
+    padding: 12px 15px;
+    font-family: 'Sansita', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* TOP 50%: Terminal Display */
+.terminal-body {
+    flex: 1.2; 
+    padding: 20px;
+    overflow-y: auto;
+    font-family: 'Trocchi', serif;
+    background: #ffffff; 
+    color: #4A4447;
+    border-bottom: 1px solid rgba(90, 23, 76, 0.2);
+}
+
+.ai-reply { 
+    margin-bottom: 12px; 
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+/* Bottom 50%: Input Grid */
+.ai-input-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    background: #fae2e7;
+    overflow-y: auto; 
+}
+
+/* ========================================= */
+/* 3. INPUT MODULES                          */
+/* ========================================= */
+.input-module { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+}
+
+.input-module label { 
+    color: #5a174c; 
+    font-size: 0.75rem; 
+    font-family: 'Sansita', sans-serif;
+    font-weight: 800; 
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-module input {
+    width: 100%;
+    background: #fff;
+    border: none;
+    border-bottom: 2px solid #5a174c; /* Dashboard style inputs */
+    color: #4A4447;
+    padding: 10px 5px;
+    font-family: 'Trocchi', serif;
+    font-size: 1rem;
+    outline: none;
+    transition: background 0.2s;
+}
+
+.input-module input:focus { 
+    background: #fdf2f4;
+}
+
+/* ========================================= */
+/* 4. TOGGLE & BUTTONS                       */
+/* ========================================= */
+.toggle-container { 
+    display: flex; 
+    border: 1px solid #5a174c; 
+    border-radius: 8px;
+    overflow: hidden;
+    height: 42px;
+}
+
+.toggle-btn { 
+    flex: 1; 
+    background: transparent; 
+    color: #5a174c; 
+    border: none; 
+    cursor: pointer; 
+    font-family: 'Sansita', sans-serif; 
+    font-weight: bold; 
+    transition: 0.2s;
+}
+
+.toggle-btn.active { 
+    background: #6b3353; /* Active Pill Color */
+    color: #ffffff; 
+}
+
+.predict-btn { 
+    grid-column: span 2; 
+    padding: 15px; 
+    background: #5a174c;
+    color: #ffffff;
+    border: none; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-family: 'Sansita', sans-serif; 
+    text-transform: uppercase;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.predict-btn:hover { 
+    background: #6b3353;
+    transform: translateY(-2px);
+}
+
+/* ========================================= */
+/* 5. SIDEBAR TOOLS (RIGHT PANEL)            */
+/* ========================================= */
+.tool-sidebar {
+    flex: 0.75;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.calc-tool {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fae2e7;
+    border: 1px solid #5a174c;
+    box-shadow: 4px 4px 0px #5a174c;
+    overflow: hidden;
+}
+
+.calc-header { 
+    background: #5a174c; 
+    color: #ffffff; 
+    padding: 12px; 
+    font-weight: 800; 
+    text-align: center; 
+    font-family: 'Sansita', sans-serif; 
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+#calcDisplay { 
+    width: 100%; 
+    height: 70px; 
+    font-size: 2.2rem; 
+    text-align: right; 
+    padding: 15px; 
+    border: none; 
+    border-bottom: 1px solid #5a174c; 
+    background: #fff; 
+    font-family: 'Trocchi', serif;
+    color: #4A4447;
+}
+
+.calc-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    padding: 10px;
+}
+
+.calc-btn { 
+    font-family: 'Sansita', sans-serif;
+    font-size: 1.1rem; 
+    font-weight: bold; 
+    border: 1px solid rgba(90, 23, 76, 0.2); 
+    background: #fdf2f4; 
+    color: #5a174c;
+    cursor: pointer; 
+    transition: 0.2s;
+}
+
+.calc-btn:hover { 
+    background: #d6aec6; 
+}
+
+.clear-btn, .equal-btn { 
+    background: #6b3353; 
+    color: #ffffff; 
+}
+
+/* Swatch Link Button */
+.swatch-link-btn {
+    width: 100%;
+    padding: 18px;
+    background: #fae2e7;
+    color: #5a174c;
+    border: 1px solid #5a174c;
+    font-family: 'Sansita', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px #5a174c;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.swatch-link-btn:hover {
+    background: #5a174c;
+    color: white;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #5a174c;
+}
